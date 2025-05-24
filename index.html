@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lấy & Copy Key - Đơn Giản</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000000;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+    .snow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      color: white;
+      font-size: 1em;
+      user-select: none;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    @keyframes rainbowBorder {
+      0% { border-image: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet) 1; }
+      16% { border-image: linear-gradient(45deg, orange, yellow, green, blue, indigo, violet, red) 1; }
+      33% { border-image: linear-gradient(45deg, yellow, green, blue, indigo, violet, red, orange) 1; }
+      50% { border-image: linear-gradient(45deg, green, blue, indigo, violet, red, orange, yellow) 1; }
+      66% { border-image: linear-gradient(45deg, blue, indigo, violet, red, orange, yellow, green) 1; }
+      83% { border-image: linear-gradient(45deg, indigo, violet, red, orange, yellow, green, blue) 1; }
+      100% { border-image: linear-gradient(45deg, violet, red, orange, yellow, green, blue, indigo) 1; }
+    }
+    .container {
+      background: white;
+      padding: 30px 25px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      z-index: 2;
+      width: 90%;
+      max-width: 400px;
+      position: relative;
+      margin: 0 auto;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 6px solid;
+      border-image-slice: 1;
+      animation: rainbowBorder 5s linear infinite;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    h2 {
+      margin-bottom: 15px;
+      color: #003f5c;
+      padding: 10px;
+      border-radius: 8px;
+      background-color: transparent;
+    }
+    #key {
+      margin: 15px 0;
+      padding: 10px;
+      background: #f0f0f0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 17px;
+      word-break: break-word;
+    }
+    button {
+      margin: 8px 5px;
+      padding: 10px 20px;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .get-btn {
+      background-color: #28a745;
+      color: white;
+    }
+    .get-btn:hover {
+      background-color: #218838;
+    }
+    .copy-btn {
+      background-color: #007bff;
+      color: white;
+    }
+    .copy-btn:hover {
+      background-color: #0056b3;
+    }
+    .copied {
+      margin-top: 10px;
+      color: green;
+      font-weight: bold;
+      display: none;
+    }
+    @media (max-width: 400px) {
+      .container {
+        padding: 20px;
+      }
+      button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  <div class="snow" id="snowContainer"></div>
+  <div class="container">
+    <h2>Lấy Key Của Bạn</h2>
+    <div id="key">Key Sẽ Hiển Thị Tại Đây 🔑</div>
+    <button class="get-btn" onclick="layKey()">Lấy Key</button>
+    <button class="copy-btn" onclick="copyKey()">Sao Chép Key</button>
+    <div class="copied" id="copiedMsg">Đã Sao Chép Key 🔑</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 70, "density": { "enable": true, "value_area": 800 }},
+        "color": { "value": "#00ffcc" },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.5 },
+        "size": { "value": 3 },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#00ffcc",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": { "enable": true, "speed": 1.5 }
+      },
+      "interactivity": {
+        "events": {
+          "onhover": { "enable": true, "mode": "repulse" }
+        }
+      },
+      "retina_detect": true
+    });
+    function layKey() {
+      const key = "Key-botvip2302";
+      document.getElementById("key").textContent = key;
+    }
+    function copyKey() {
+      const keyText = document.getElementById("key").innerText;
+      if (keyText === "Key Sẽ Hiển Thị Tại Đây 🔑") return;
+      navigator.clipboard.writeText(keyText).then(() => {
+        const msg = document.getElementById("copiedMsg");
+        msg.style.display = "block";
+        setTimeout(() => msg.style.display = "none", 2000);
+      });
+    }
+    const snowContainer = document.getElementById("snowContainer");
+    const numFlakes = 50;
+    for (let i = 0; i < numFlakes; i++) {
+      const flake = document.createElement("div");
+      flake.classList.add("snowflake");
+      flake.textContent = "❄";
+      flake.style.left = Math.random() * 100 + "vw";
+      flake.style.fontSize = 10 + Math.random() * 20 + "px";
+      flake.style.animationDuration = 3 + Math.random() * 5 + "s";
+      flake.style.animationDelay = Math.random() * 5 + "s";
+      snowContainer.appendChild(flake);
+    }
+  </script>
+</body>
+</html>
